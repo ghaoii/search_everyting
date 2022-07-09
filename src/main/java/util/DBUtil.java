@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * SQLite数据库的工具类，创建数据源，创建数据库的连接
@@ -55,7 +56,25 @@ public class DBUtil {
         return getDataSource().getConnection();
     }
 
+
     public static void main(String[] args) throws SQLException {
         System.out.println(getConnection());
+    }
+
+    public static void close(Connection connection, Statement statement) {
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

@@ -15,6 +15,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.1</version>
@@ -45,7 +51,7 @@
                     <archive>
                         <manifest>
                             <!-- 指定入口类 -->
-                            <mainClass>util/DBInit</mainClass>
+                            <mainClass>Main</mainClass>
                             <!-- 在jar的MF文件中生成classpath属性 -->
                             <addClasspath>true</addClasspath>
                             <!-- classpath前缀,即依赖jar包的路径 -->
