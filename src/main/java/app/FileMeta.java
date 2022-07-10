@@ -7,6 +7,7 @@ package app;
  **/
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import util.Util;
 
@@ -14,11 +15,12 @@ import java.util.Date;
 
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode
 public class FileMeta {
     private String name;
     private String path;
-    private boolean is_directory;
-    private long size;
+    private Boolean is_directory;
+    private Long size;
     private Date lastModified;
     // 把中文字符替换成拼音
     private String pinyin;
@@ -30,6 +32,7 @@ public class FileMeta {
     private String isDirectoryText;// 文件类型
     private String sizeText;// 文件大小
     private String lastModifiedText;// 文件最后修改日期
+
 
     public void setIsDirectory(boolean isDirectory) {
         this.is_directory = isDirectory;

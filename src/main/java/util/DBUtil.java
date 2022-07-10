@@ -6,6 +6,7 @@ import org.sqlite.SQLiteDataSource;
 import javax.sql.DataSource;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,6 +17,8 @@ import java.sql.Statement;
  */
 public class DBUtil {
     private volatile static DataSource DATASOURCE;
+
+    private static final String CHINESE_PATTERN = "[\\u4E00-\\u9FA5]";
 
     // 获取数据源方法，使用double-check单例模式获取数据源对象
     private static DataSource getDataSource() {
@@ -76,5 +79,34 @@ public class DBUtil {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static void close(Connection connection, Statement statement, ResultSet resultSet) {
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static boolean hasChinese(String name) {
+        // match方法是看字符串与括号中的正则表达式相匹配
+        return name.matches(".*" + CHINESE_PATTERN + ".*");
     }
 }

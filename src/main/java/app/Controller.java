@@ -1,5 +1,6 @@
 package app;
 
+import callback.impl.FileSave2DB;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -70,18 +71,17 @@ public class Controller implements Initializable {
         this.srcDirectory.setText(path);
         // 根据选择的目录文件，扫描该目录下所有的文件
         System.out.println("开始扫描文件夹......");
-        FileScanner fileScanner = new FileScanner();
+        FileScanner fileScanner = new FileScanner(new FileSave2DB());
         long start = System.nanoTime();
         fileScanner.scan(file);
         long end = System.nanoTime();
         System.out.println("扫描到的文件夹数量是 : " + fileScanner.getDirNum());
         System.out.println("扫描到的文件数量是 : " + fileScanner.getFileNum());
-        System.out.println("共耗时 : " + (start - end) * 1.0 / 100_0000);
+        System.out.println("共耗时 : " + (end - start) * 1.0 / 100_0000);
         // 获取扫描后的所有文件内容
         this.fileMetas = fileScanner.getFileMetas();
 
         // TODO 接收扫描完之后的文件，刷新界面，让扫描到的文件显示在界面
-        freshTable();
     }
 
     // 刷新表格数据(得到扫描结果集的办法有两个，一个是传参，一个是设置成员变量)
