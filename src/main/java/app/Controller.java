@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 import task.FileScanner;
+import task.FileSearch;
 import util.DBInit;
 
 import java.io.File;
@@ -41,7 +42,7 @@ public class Controller implements Initializable {
 
     // 接收扫描到的文件的结果集
     // 由于我们需要用这个结果集刷新界面，
-    List<FileMeta> fileMetas;
+    //List<FileMeta> fileMetas;
 
     // 该方法覆写了Initializable接口中的抽象方法
     // 是点击运行项目，界面初始化时加载的一个方法
@@ -78,20 +79,26 @@ public class Controller implements Initializable {
         System.out.println("扫描到的文件夹数量是 : " + fileScanner.getDirNum());
         System.out.println("扫描到的文件数量是 : " + fileScanner.getFileNum());
         System.out.println("共耗时 : " + (end - start) * 1.0 / 100_0000);
-        // 获取扫描后的所有文件内容
-        this.fileMetas = fileScanner.getFileMetas();
 
         // TODO 接收扫描完之后的文件，刷新界面，让扫描到的文件显示在界面
+        freshTable();
     }
 
-    // 刷新表格数据(得到扫描结果集的办法有两个，一个是传参，一个是设置成员变量)
-    // 这里建议使用成员变量
     private void freshTable(){
         ObservableList<FileMeta> metas = fileTable.getItems();
         metas.clear();
-        // TODO 扫描文件夹之后刷新界面
-        if(fileMetas != null) {
-            metas.addAll(fileMetas);
+
+        // 获取用户选择的文件
+        String dir = srcDirectory.getText();
+        // 保证用户选择的文件不为空
+        if(dir != null && dir.trim().length() != 0) {
+            // 界面中已经选择文件，此时已经将最新的数据保存到了数据库中
+            // 只需要取出数据库中的内容展示到界面上
+            // 获取用户在搜索框中输入的内容(可以为空)
+            String str = searchField.getText();
+            //根据选择的路径，和用户的输入，将数据库中指定内容刷新到界面
+            List<FileMeta> fileSearched = FileSearch.search(dir, str);
+            metas.addAll(fileSearched);
         }
     }
 

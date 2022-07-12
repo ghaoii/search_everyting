@@ -37,9 +37,9 @@ public class DBInit {
             if (str.equals("") || str.equals("\n")) {
                 continue;
             }
-            if (str.contains("-- ")) {
-                str = str.replaceAll("--", "");
-            }
+//            if (str.contains("-- ")) {
+//                str = str.replaceAll("--", "");
+//            }
             ret.add(str);
         }
         System.out.println("读取到的SQL内容为：");

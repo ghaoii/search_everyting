@@ -25,7 +25,7 @@ public class FileScanner {
     }
 
     // 文件扫描的结果集，存放被扫描目录下的所有文件(包括目录)
-    List<FileMeta> fileMetas = new ArrayList<>();
+    //List<FileMeta> fileMetas = new ArrayList<>();
 
     /**
      * 传入目录文件，扫描目录下的所有文件
