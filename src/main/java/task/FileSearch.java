@@ -47,7 +47,7 @@ public class FileSearch {
                 ps.setString(4, "%" + str + "%");
                 ps.setString(5, "%" + str + "%");
             }
-            System.out.println("正在按用户输入内容检索文件, SQL为 : " + ps);
+            //System.out.println("正在按用户输入内容检索文件, SQL为 : " + ps);
             rs = ps.executeQuery();
             while(rs.next()) {
                 FileMeta meta = new FileMeta();
@@ -64,7 +64,7 @@ public class FileSearch {
             System.out.println("搜索用户输入文件时出错! 请检查SQL语句!");
             e.getStackTrace();
         }finally {
-            DBUtil.close(connection, ps, rs);
+            DBUtil.close(ps, rs);
         }
         return ret;
     }

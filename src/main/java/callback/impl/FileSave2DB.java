@@ -73,13 +73,13 @@ public class FileSave2DB implements FileScannerCallback {
                         + File.separator + "%");
             }
             int num = ps.executeUpdate();
-            System.out.println("执行了删除操作 : " + sql);
-            System.out.println("共删除" + num + "个文件");
+//            System.out.println("执行了删除操作 : " + sql);
+//            System.out.println("共删除" + num + "个文件");
         }catch (SQLException e) {
             System.out.println("数据删除失败!");
             e.getStackTrace();
         }finally {
-            DBUtil.close(connection, ps);
+            DBUtil.close(ps);
         }
     }
 
@@ -109,12 +109,12 @@ public class FileSave2DB implements FileScannerCallback {
                 ps.setString(7, pinyin[1]);
             }
             int num = ps.executeUpdate();
-            System.out.println("执行了保存操作 : " + sql);
+            //System.out.println("执行了保存操作 : " + sql);
         }catch (SQLException e) {
             System.out.println("数据插入失败!");
             e.getStackTrace();
         }finally {
-            DBUtil.close(connection, ps);
+            DBUtil.close(ps);
         }
     }
 
@@ -130,7 +130,7 @@ public class FileSave2DB implements FileScannerCallback {
             ps = connection.prepareStatement(sql);
             ps.setString(1, dir.getPath());
             rs = ps.executeQuery();
-            System.out.println("查询指定路径的SQL为 : " + ps);
+            //System.out.println("查询指定路径的SQL为 : " + ps);
             while(rs.next()) {
                 FileMeta meta = new FileMeta();
                 meta.setName(rs.getString("name"));
@@ -150,7 +150,7 @@ public class FileSave2DB implements FileScannerCallback {
             System.out.println("文件查询出错!请检查SQL语句");
             e.getStackTrace();
         } finally {
-            DBUtil.close(connection, ps, rs);
+            DBUtil.close(ps, rs);
         }
         return dbFiles;
     }

@@ -65,7 +65,7 @@ public class DBInit {
             System.out.println("数据库初始化失败!");
             e.getStackTrace();
         }finally {
-            DBUtil.close(connection, statement);
+            DBUtil.close(statement);
         }
     }
 

@@ -44,6 +44,8 @@ public class Controller implements Initializable {
     // 由于我们需要用这个结果集刷新界面，
     //List<FileMeta> fileMetas;
 
+    private Thread scanThread;
+
     // 该方法覆写了Initializable接口中的抽象方法
     // 是点击运行项目，界面初始化时加载的一个方法
     // 就相当于运行一个主类，首先要加载主类的静态块一个道理
@@ -71,17 +73,19 @@ public class Controller implements Initializable {
         // 在界面中显示完整的路径
         this.srcDirectory.setText(path);
         // 根据选择的目录文件，扫描该目录下所有的文件
-        System.out.println("开始扫描文件夹......");
+        //System.out.println("开始扫描文件夹......");
         FileScanner fileScanner = new FileScanner(new FileSave2DB());
-        long start = System.nanoTime();
-        fileScanner.scan(file);
-        long end = System.nanoTime();
-        System.out.println("扫描到的文件夹数量是 : " + fileScanner.getDirNum());
-        System.out.println("扫描到的文件数量是 : " + fileScanner.getFileNum());
-        System.out.println("共耗时 : " + (end - start) * 1.0 / 100_0000);
-
-        // TODO 接收扫描完之后的文件，刷新界面，让扫描到的文件显示在界面
-        freshTable();
+        if(scanThread != null) {
+            // 如果上个任务还没有结束，用户就重新选择了其他文件夹，则中断当前正在扫描的任务
+            scanThread.interrupt();
+        }
+        // 开启新线程扫描新选择的目录
+        scanThread = new Thread(() -> {
+            fileScanner.scan(file);
+            // TODO 接收扫描完之后的文件，刷新界面，让扫描到的文件显示在界面
+            freshTable();
+        });
+        scanThread.start();
     }
 
     private void freshTable(){

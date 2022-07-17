@@ -16,7 +16,10 @@ import java.sql.Statement;
  * 无论是哪种关系型数据库，操作的流程都是JDBC四步走
  */
 public class DBUtil {
+    // 单例数据源
     private volatile static DataSource DATASOURCE;
+    // 单例数据库连接
+    private volatile static Connection CONNECTION;
 
     private static final String CHINESE_PATTERN = "[\\u4E00-\\u9FA5]";
 
@@ -41,6 +44,17 @@ public class DBUtil {
         return DATASOURCE;
     }
 
+    public static Connection getConnection() throws SQLException {
+        if(CONNECTION == null) {
+            synchronized (DBUtil.class) {
+                if(CONNECTION == null) {
+                    CONNECTION = getDataSource().getConnection();
+                }
+            }
+        }
+        return CONNECTION;
+    }
+
     /**
      * 配置SQLite数据库的地址
      * 对MySQL来说：jdbc:mysql://127.0.0.1:3306/数据库名称?
@@ -55,23 +69,12 @@ public class DBUtil {
         return url;
     }
 
-    public static Connection getConnection() throws SQLException {
-        return getDataSource().getConnection();
-    }
-
 
     public static void main(String[] args) throws SQLException {
         System.out.println(getConnection());
     }
 
-    public static void close(Connection connection, Statement statement) {
-        if(connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public static void close(Statement statement) {
         if(statement != null) {
             try {
                 statement.close();
@@ -81,21 +84,8 @@ public class DBUtil {
         }
     }
 
-    public static void close(Connection connection, Statement statement, ResultSet resultSet) {
-        if(connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if(statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public static void close(Statement statement, ResultSet resultSet) {
+        close(statement);
         if(resultSet != null) {
             try {
                 resultSet.close();
