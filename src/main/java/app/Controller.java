@@ -82,7 +82,6 @@ public class Controller implements Initializable {
         // 开启新线程扫描新选择的目录
         scanThread = new Thread(() -> {
             fileScanner.scan(file);
-            // TODO 接收扫描完之后的文件，刷新界面，让扫描到的文件显示在界面
             freshTable();
         });
         scanThread.start();

@@ -92,7 +92,7 @@ public class FileScanner {
             File[] files = dir.listFiles();
             // 遍历files下的所有文件
             for(File file : files) {
-                FileMeta fileMeta = new FileMeta();
+                //FileMeta fileMeta = new FileMeta();
                 if(file.isDirectory()) {
                     // 如果文件是个目录，就继续递归扫描目录
                     dirNum.incrementAndGet();// 等同于++i
